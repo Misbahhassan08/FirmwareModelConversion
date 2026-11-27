@@ -22,3 +22,6 @@ User confirmed: changing DISP_WIDTH and DISP_HEIGHT makes the custom model work 
 
 ## Confirmed resolution baseline
 1920x1080 works; 2592x1944 fails. User now targets 3MP streaming with same custom RKNN. Test 2304x1296 and intermediate modes per docs/RUN_LOG.md. Exact root cause still unverified.
+
+## OCR next phase
+User wants on-camera plate text recognition alongside working detector. Proposed LPRNet second RKNN model, standalone validation first, local plate alphabet fine-tuning and dual-model memory testing. See [OCR roadmap](docs/OCR_ROADMAP.md). Not implemented yet.
