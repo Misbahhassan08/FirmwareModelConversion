@@ -8,3 +8,6 @@ Next: clone repo, place local checkpoint, get matching toolkit, prepare images, 
 
 ## Latest hardware milestone (2026-11-27)
 See [hardware test](docs/HARDWARE_TEST_2026-11-27.md). Custom RKNN compiled and initialized successfully on camera; three NHWC INT8 heads with 21 channels verified. VENC fails EFAULT after VI starts. Inference and streaming unverified. Next: clean-boot original/custom comparison, memory/kernel logs, isolated inference, inspect firmware source. This supersedes earlier pending compilation status.
+
+## Firmware source review
+See [FIRMWARE_ANPR_REVIEW.md](docs/FIRMWARE_ANPR_REVIEW.md). Actual source already uses two classes and NHWC. Video resolution 2884x1624 differs from sensor 2592x1944; large DMA pools and NPU-first initialization are diagnostic targets. First test 1920x1080 with model input unchanged, log memory/stride and VENC return. Inference logging flag always false; BGR/padding mismatch and cleanup require attention. No root cause confirmed or firmware patch tested.
