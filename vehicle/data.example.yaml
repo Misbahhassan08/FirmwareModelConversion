@@ -1,0 +1,5 @@
+path: /path/to/Truck_Dataset
+train: train/images
+val: valid/images
+nc: 2
+names: [vehicle, registration_plate]
