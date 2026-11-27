@@ -5,3 +5,6 @@ Custom checkpoint yolov5s_vehicle_registartionplate.pt: 14,395,055 bytes; SHA256
 Decision: preserve SiLU first, export three post-sigmoid heads; alternative optimized ReLU requires validation/fine-tuning. Use toolkit 1.6.0 baseline. No fabricated RKNN.
 Current status: scripts prepared, syntax checked in previous turn, not executed end-to-end; calibration images not available; ONNX/RKNN compilation pending; firmware source and SDK runtime attributes not supplied; custom camera validation pending. User plans to try VS Code.
 Next: clone repo, place local checkpoint, get matching toolkit, prepare images, run export and compile, capture logs and tensor dump, adapt firmware if required, test against original PT, record results. Update this file and append run results on each future change. Repository is public; keep model binaries and dataset local unless explicitly authorized for publication.
+
+## Latest hardware milestone (2026-11-27)
+See [hardware test](docs/HARDWARE_TEST_2026-11-27.md). Custom RKNN compiled and initialized successfully on camera; three NHWC INT8 heads with 21 channels verified. VENC fails EFAULT after VI starts. Inference and streaming unverified. Next: clean-boot original/custom comparison, memory/kernel logs, isolated inference, inspect firmware source. This supersedes earlier pending compilation status.
