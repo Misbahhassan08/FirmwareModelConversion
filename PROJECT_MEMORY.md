@@ -25,3 +25,6 @@ User confirmed: changing DISP_WIDTH and DISP_HEIGHT makes the custom model work 
 
 ## OCR next phase
 User wants on-camera plate text recognition alongside working detector. Proposed LPRNet second RKNN model, standalone validation first, local plate alphabet fine-tuning and dual-model memory testing. See [OCR roadmap](docs/OCR_ROADMAP.md). Not implemented yet.
+
+## OCR V1 source package
+See [OCR_V1_IMPLEMENTATION.md](docs/OCR_V1_IMPLEMENTATION.md). Full modified firmware source delivered locally; optional standalone and live OCR, training and conversion scripts. Host C++ syntax/CTC test and Python syntax passed; OCR model compilation, ARM build and physical testing pending. Existing detector unchanged; 1080p default. No proprietary source or model uploaded to public repo.
