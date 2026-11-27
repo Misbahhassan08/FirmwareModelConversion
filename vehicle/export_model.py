@@ -1,5 +1,5 @@
 """Export trusted YOLOv5 checkpoint without decoded Detect output."""
-import argparse, sys, inspect
+import argparse, sys, inspect, pathlib
 from pathlib import Path
 from types import MethodType
 import torch
@@ -9,6 +9,10 @@ p.add_argument('--weights',default='best.pt')
 p.add_argument('--output',default='vehicle_registrationplate.onnx')
 a=p.parse_args()
 sys.path.insert(0,str(Path(a.yolov5).resolve()))
+# Checkpoints saved on Python 3.13+ can reference pathlib._local, while
+# Python 3.11 exposes the same path classes directly from pathlib.
+if sys.version_info < (3, 13):
+    sys.modules.setdefault('pathlib._local', pathlib)
 ckpt=torch.load(a.weights,map_location='cpu',weights_only=False)
 model=ckpt.get('ema') or ckpt['model']
 model=model.float().eval()

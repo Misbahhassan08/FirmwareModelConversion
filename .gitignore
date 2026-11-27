@@ -9,3 +9,4 @@ vehicle/yolov5/
 vehicle/calibration_640/
 vehicle/dataset.txt
 vehicle/images/
+checkpoint/
