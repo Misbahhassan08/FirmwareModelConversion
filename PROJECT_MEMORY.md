@@ -11,3 +11,6 @@ See [hardware test](docs/HARDWARE_TEST_2026-11-27.md). Custom RKNN compiled and 
 
 ## Firmware source review
 See [FIRMWARE_ANPR_REVIEW.md](docs/FIRMWARE_ANPR_REVIEW.md). Actual source already uses two classes and NHWC. Video resolution 2884x1624 differs from sensor 2592x1944; large DMA pools and NPU-first initialization are diagnostic targets. First test 1920x1080 with model input unchanged, log memory/stride and VENC return. Inference logging flag always false; BGR/padding mismatch and cleanup require attention. No root cause confirmed or firmware patch tested.
+
+## Successful hardware milestone — 2026-11-27
+User confirmed: changing DISP_WIDTH and DISP_HEIGHT makes the custom model work perfectly on RV1106G3. The recommended diagnostic resolution was 1920x1080, but the user has not explicitly confirmed the final numeric dimensions. Preserve current SiLU INT8 RKNN, two classes, 640x640 model input, three NHWC heads and original anchors. Resolution change resolved observed VENC failure; underlying memory/alignment/encoder mechanism remains unverified. No retraining or activation replacement required for this reported successful run. Quantitative accuracy, FPS, stability and exact final resolution remain to be recorded. This supersedes earlier pending hardware operation status. Do not change the working setup without a controlled test.
