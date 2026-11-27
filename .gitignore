@@ -1,0 +1,11 @@
+*.pt
+*.rknn
+*.onnx
+*.whl
+*.log
+.venv*/
+__pycache__/
+vehicle/yolov5/
+vehicle/calibration_640/
+vehicle/dataset.txt
+vehicle/images/
