@@ -14,3 +14,6 @@ See [FIRMWARE_ANPR_REVIEW.md](docs/FIRMWARE_ANPR_REVIEW.md). Actual source alrea
 
 ## Successful hardware milestone — 2026-11-27
 User confirmed: changing DISP_WIDTH and DISP_HEIGHT makes the custom model work perfectly on RV1106G3. The recommended diagnostic resolution was 1920x1080, but the user has not explicitly confirmed the final numeric dimensions. Preserve current SiLU INT8 RKNN, two classes, 640x640 model input, three NHWC heads and original anchors. Resolution change resolved observed VENC failure; underlying memory/alignment/encoder mechanism remains unverified. No retraining or activation replacement required for this reported successful run. Quantitative accuracy, FPS, stability and exact final resolution remain to be recorded. This supersedes earlier pending hardware operation status. Do not change the working setup without a controlled test.
+
+## Confirmed resolution baseline
+1920x1080 works; 2592x1944 fails. User now targets 3MP streaming with same custom RKNN. Test 2304x1296 and intermediate modes per docs/RUN_LOG.md. Exact root cause still unverified.
