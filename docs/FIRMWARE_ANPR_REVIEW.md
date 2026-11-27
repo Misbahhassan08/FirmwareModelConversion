@@ -1,0 +1,15 @@
+# ANPR firmware source review — 2026-11-27
+Reviewed uploaded firmware_ANPR.rar locally, not executed or cross-compiled. Source not published to public repository.
+## Confirmed source findings
+- mai2/src/main.cc:28–29 sets DISP_WIDTH=2884, DISP_HEIGHT=1624; hardware sensor reports 2592x1944. Width 2884 is not 16-aligned. ISP scaling and encoder support must be checked. main.cc:128 allocates RGB DMA pool width*height*3 (14,050,848 bytes); VI uses 2 YUV420SP buffers; VENC requests width*height*1.5 buffer (7,025,424 bytes), two stream buffers. Nominal allocations do not establish actual DMA usage.
+- main.cc:92 RKNN initialization precedes MPI SYS, RGB pool, ISP, RTSP, VI and VENC (214). VENC failure occurs before first inference. Try clean boot and 1920x1080 diagnostic resolution; compare original and custom with same settings, and then isolate VENC-only or test allocation order. Original COCO model requires matching 80-class build for inference; do not run it through two-class decoder.
+- luckfox_mpi.cc:98–153 VENC H264 high profile, RGB888, 10240 kbps, 30 FPS, virtual dimensions equal picture dimensions. Check alignment, supported pixel format, return codes; driver EFAULT not proven ENOMEM.
+- include/rknn/postprocess.h:10 already OBJ_CLASS_NUM=2 and PROP_BOX_SIZE=7. CMake defines RV1106_1103. postprocess.cc:297–355 uses contiguous NHWC offsets and per-head dequantization, embedded sigmoid semantics. At 569–570 H/W indices reversed (hidden by square grids). Check native stride before assuming packed layout.
+- yolov5.cc:70/88 queries native input/NHWC output, sets input UINT8 and allocates size_with_stride. main.cc:254 memcpy assumes packed input. Add stride logging and check buffer dimensions, output channels and types. Header supports RKNN_QUERY_MEM_SIZE with total_weight_size, total_internal_size, total_dma_allocated_size; log before/after binding for A/B.
+- main.cc:245–255 converts NV12-like YUV420sp to BGR and copies BGR into model; verify sensor chroma ordering and convert BGR to RGB for inference if expected. Letterbox padding is black, conversion calibration used 114; match validation and calibration.
+- main.cc:251/258 ran_inference always false, suppresses detection logs; set to inference success. Early failure paths do not consistently release RKNN/MPI/VI/ISP/pool/RTSP resources; normal cleanup after infinite loop unreachable without exit mechanism.
+## Next experiment
+1. Back up executable/model; fresh boot. Reduce video resolution only to 1920x1080 (keep model 640). Rebuild using existing toolchain. Test custom.
+2. Capture dmesg and /proc/meminfo before/after, log VENC exact return and tensor stride, RKNN memory query. Compare with original using matching class build or startup-only test without inference.
+3. Isolate encoder and NPU; only if needed change order or use validated optimized ReLU model after fine tuning. No confirmed root cause yet.
+4. Once startup works, test actual detections and PT parity. No source edits or build performed in this review.
